@@ -1,0 +1,4 @@
+test-server1 192.168.1.2 22 test_user1
+test-server2 192.168.1.3 22 test_user2
+test-server3 192.168.1.4 222 test_user3
+test-server4 192.168.1.4 222 test_user4
