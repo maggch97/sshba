@@ -39,7 +39,7 @@ std::string getUserDir() { return getenv("USERPROFILE"); }
 int getKey()
 {
     int key = getch();
-    if (key == 0) {
+    if (key == 0 || key == 224) {
         int specialKey = getch();
         specialKey = specialKey << 8;
         return specialKey;
