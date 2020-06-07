@@ -141,10 +141,12 @@ int main(int argc, char* argv[])
     readHosts(getConfigDir() + "/hosts", hosts);
     if (argc == 2) {
         std::string command = argv[1];
-        if (command == "config") {
+        if (command == "key") {
             changeConfig();
-            return 0;
+        } else if (command == "config") {
+            std::cout << getConfigDir() << std::endl;
         }
+        return 0;
     }
     if (hosts.empty()) {
         std::cout << getConfigDir() + "/hosts is empty" << std::endl;
