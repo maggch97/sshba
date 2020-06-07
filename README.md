@@ -14,8 +14,16 @@ Windows下使用 `echo %USERPROFILE%` , Linux/Mac使用 `echo $HOME` 输出用�
 
 默认e向上，d向下，回车连接。其他所有按键都是退出。
 
+### 配置：
+
+`.sshba/config` 文件是按键配置，注意冒号和按键中间需要有一个空格
+
+`.sshba/ssh_info` 文件是所有服务器信息，格式 `名称 地址 端口 用户名` 
+
 
 ### 编译:
 ```
 g++ .\sshba.cpp --std=c++17
 ```
+
+
