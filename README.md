@@ -23,7 +23,7 @@ Windows下使用 `echo %USERPROFILE%` , Linux/Mac使用 `echo $HOME` 输出用�
 
 ### 编译:
 ```
-g++ .\sshba.cpp --std=c++17
+g++ ./sshba.cpp --std=c++17 -o sshba
 ```
 
 
