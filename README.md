@@ -2,7 +2,13 @@
 
 ## 方便使用ssh连接服务器的命令行工具
 
+Wdinwos10 + Windows Terminal + sshba 0.0.1
+
 ![image](https://raw.githubusercontent.com/maggch97/sshba/master/img/GIF2020-6-7%208-01-10.gif)
+
+Ubuntu20.04 + Terminator + sshba 0.0.2
+
+![image](https://raw.githubusercontent.com/maggch97/sshba/master/img/GIF2020-06-07-15-28.gif)
 
 ### 使用方法：
 
