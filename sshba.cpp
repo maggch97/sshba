@@ -1,10 +1,10 @@
 
 #include <algorithm>
-#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+
 #ifdef _WIN32
 #include "win.hpp"
 #else
@@ -78,54 +78,64 @@ void display()
         buff.back() += x.getDisplayText(maxLenDisplayName, maxLenUserName);
     }
     cls();
-    std::pair<int, int> winSize = getWinSize();
+    std::pair<int, int> terminalSize = getTerminalSize();
     int textHeight = buff.size();
     for (int i = 0; i < sshInfoList.size(); i++) {
         auto& line = buff[i];
-        if (line.size() > winSize.second) {
-            line.resize(winSize.second);
-        }
-        if (i == currentIndex) {
-            line = "\033[31m" + line + "\033[0m";
+        if (line.size() > terminalSize.second) {
+            line.resize(terminalSize.second);
         }
     }
-    if (textHeight <= winSize.first) {
+    if (textHeight <= terminalSize.first) {
         for (int i = 0; i < buff.size(); i++) {
             if (i) {
                 std::cout << std::endl;
             }
+            if (i == currentIndex) {
+                std::cout << "\033[31m";
+            }
             std::cout << buff[i];
+            if (i == currentIndex) {
+                std::cout << "\033[0m";
+            }
         }
     } else {
-        int visibleWidth = winSize.first - 2;
-        if (visibleWidth <= 0) {
+        int listHeight = terminalSize.first - 2;
+        if (listHeight <= 0) {
             std::cout << "Terminal height too small！";
         } else {
             int upIdx = 0;
             int downIdx = buff.size() - 1;
-            int upLine = visibleWidth / 2 + 1;
-            int downLine = visibleWidth - upLine;
+            int upLine = listHeight / 2 + 1;
+            int downLine = listHeight - upLine;
             if (currentIndex - upLine + 1 >= 0 && currentIndex + downLine < buff.size()) {
                 upIdx = currentIndex - upLine + 1;
                 downIdx = currentIndex + downLine;
             } else if (currentIndex - upLine + 1 < 0) {
-                downIdx = visibleWidth - 1;
+                downIdx = listHeight - 1;
             } else {
-                upIdx = downIdx - visibleWidth + 1;
+                upIdx = downIdx - listHeight + 1;
             }
             if (upIdx == 0) {
-                std::cout << std::endl;
+                std::cout << std::string(terminalSize.second, ' ');
             } else {
-                std::cout << ". . . " << upIdx << " more" << std::endl;
+                std::string more = ". . . " + std::to_string(upIdx) + " more";
+                std::cout << more << std::string(terminalSize.second - more.size(), ' ') << std::endl;
             }
             for (int i = upIdx; i <= downIdx; i++) {
-
-                std::cout << buff[i] << std::endl;
+                if (i == currentIndex) {
+                    std::cout << "\033[31m";
+                }
+                std::cout << buff[i] << std::string(terminalSize.second - buff[i].size(), ' ') << std::endl;
+                if (i == currentIndex) {
+                    std::cout << "\033[0m";
+                }
             }
             if (downIdx == buff.size() - 1) {
-                std::cout;
+                std::cout << std::string(terminalSize.second, ' ');
             } else {
-                std::cout << ". . . " << buff.size() - 1 - downIdx << " more";
+                std::string more = ". . . " + std::to_string(buff.size() - 1 - downIdx) + " more";
+                std::cout << more << std::string(terminalSize.second - more.size(), ' ');
             }
         }
     }
@@ -133,12 +143,13 @@ void display()
 
 void select()
 {
-    char key;
-    while (key = getch()) {
+    int key;
+    while (true) {
+        key = getKey();
         if (key == '\n' || key == '\r') {
             const auto& x = sshInfoList[currentIndex];
             std::string cmd = "ssh " + x.userName + "@" + x.host + " -p" + std::to_string(x.port);
-            std::cout << "> " << cmd << std::endl;
+            std::cout << std::endl << "> " << cmd << std::endl;
             system(cmd.c_str());
             exit(0);
         } else if (key == upKey) {
@@ -149,16 +160,12 @@ void select()
             exit(0);
         }
         currentIndex = (currentIndex + int(sshInfoList.size())) % int(sshInfoList.size());
-
         display();
     }
 }
 
 int main()
 {
-#ifdef _WIN32
-    windowsInit();
-#endif
     readConfig(getConfigDir() + "/config");
     readSshInfoList(getConfigDir() + "/ssh_info");
     display();

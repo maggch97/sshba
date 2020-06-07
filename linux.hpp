@@ -3,7 +3,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-char getch()
+int getKey()
 {
     char buf = 0;
     struct termios old = { 0 };
@@ -29,7 +29,7 @@ void cls() { printf("\033c"); }
 
 std::string getUserDir() { return getenv("HOME"); }
 
-std::pair<int, int> getWinSize()
+std::pair<int, int> getTerminalSize()
 {
     winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
