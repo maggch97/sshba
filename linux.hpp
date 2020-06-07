@@ -3,7 +3,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-int getKey()
+char getch()
 {
     char buf = 0;
     struct termios old = { 0 };
@@ -25,6 +25,21 @@ int getKey()
     return buf;
 }
 
+int getKey()
+{
+    int key = getch();
+    // 禁止ESC
+    if (key == 27) {
+        key = getch();
+        if (key != 91) {
+            perror("Esc is unsupported!");
+        } else {
+            key = getch();
+            key = key << 8;
+        }
+    }
+    return key;
+}
 void cls() { printf("\033c"); }
 
 std::string getUserDir() { return getenv("HOME"); }

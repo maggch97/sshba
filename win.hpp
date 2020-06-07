@@ -42,7 +42,6 @@ int getKey()
     if (key == 0) {
         int specialKey = getch();
         specialKey = specialKey << 8;
-        std::cout << "!" << specialKey << "!";
         return specialKey;
     } else {
         return key;
