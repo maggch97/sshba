@@ -21,13 +21,15 @@ g++ ./sshba.cpp --std=c++17 -o sshba
 
 Windows用户向Path环境变量增加 sshba.exe 程序所在目录，Linux/Mac用户把sshba二进制文件移动到`/usr/local/bin`目录
 
-命令行输入`sshba config` 配置上下按键(目前只保证字母，数字，符号以及方向键可用)
+使用`sshba key` 命令配置上下按键(目前只保证字母，数字，符号以及方向键可用)
 
 默认e向上，d向下，回车连接。其他所有按键都是退出。
 
 命令行输入`sshba` 首次使用会提示hosts为空，需要编辑hosts文件增加至少一条服务器信息
 
 ### 配置：
+
+使用`sshba config`命令输出配置文件目录
 
 `.sshba/config` 文件是按键配置，二进制文件无法编辑
 
