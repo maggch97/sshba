@@ -34,13 +34,24 @@ void cls()
     }
 }
 
-std::string getUserDir() { return getenv("USERPROFILE"); }
+std::string getUserDir()
+{
+    std::string userDir;
+    char* buf = nullptr;
+    size_t sz = 0;
+    if (_dupenv_s(&buf, &sz, "USERPROFILE") == 0 && buf != nullptr) {
+        printf("EnvVarName = %s\n", buf);
+        userDir = buf;
+        free(buf);
+    };
+    return userDir;
+}
 
 int getKey()
 {
-    int key = getch();
+    int key = _getch();
     if (key == 0 || key == 224) {
-        int specialKey = getch();
+        int specialKey = _getch();
         specialKey = specialKey << 8;
         return specialKey;
     } else {
