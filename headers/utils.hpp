@@ -18,7 +18,7 @@ std::string path(T... pathList) {
         if ((path.empty() || path.back() == '\\') || (!s.empty() && s.front() == '\\')) {
             path.append(s);
         } else {
-            path.append("\\").append(s);
+            path.append(pathSeparator()).append(s);
         }
     };
     std::initializer_list<int>{(append(pathList), 0)...};

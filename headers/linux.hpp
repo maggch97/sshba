@@ -56,4 +56,8 @@ std::string pathSeparator() {
     return "/";
 }
 
+void editFile(std::string path) {
+    system(("vim " + path).c_str());
+}
+
 #endif
